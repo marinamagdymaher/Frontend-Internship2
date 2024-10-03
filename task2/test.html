@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List with Update</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      margin: 0;
+    }
+
+    .todo-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+    }
+
+    #todoInput {
+      width: 80%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    #todoList {
+      list-style: none;
+      padding: 0;
+    }
+
+    .todo-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: #999;
+    }
+
+    .delete-btn,
+    .update-btn {
+      background: #dc3545;
+      color: #fff;
+      border: none;
+      padding: 5px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-left: 5px;
+    }
+
+    .delete-btn:hover,
+    .update-btn:hover {
+      background: #c82333;
+    }
+  </style>
+  <body>
+    <div class="todo-container">
+      <h1>To-Do List</h1>
+      <input type="text" id="todoInput" placeholder="Add a new task..." />
+      <button id="addButton">Add</button>
+      <ul id="todoList"></ul>
+    </div>
+    <script>
+      document
+        .getElementById("addButton")
+        .addEventListener("click", addToDoItem);
+
+      function addToDoItem() {
+        const todoInput = document.getElementById("todoInput");
+        const todoList = document.getElementById("todoList");
+
+        if (todoInput.value.trim() !== "") {
+          const listItem = document.createElement("li");
+          listItem.classList.add("todo-item");
+
+          const taskText = document.createElement("span");
+          taskText.textContent = todoInput.value;
+          taskText.addEventListener("click", toggleComplete);
+
+          const updateButton = document.createElement("button");
+          updateButton.textContent = "Update";
+          updateButton.classList.add("update-btn");
+          updateButton.addEventListener("click", () =>
+            updateToDoItem(taskText)
+          );
+
+          const deleteButton = document.createElement("button");
+          deleteButton.textContent = "Delete";
+          deleteButton.classList.add("delete-btn");
+          deleteButton.addEventListener("click", deleteToDoItem);
+
+          listItem.appendChild(taskText);
+          listItem.appendChild(updateButton);
+          listItem.appendChild(deleteButton);
+          todoList.appendChild(listItem);
+
+          todoInput.value = "";
+        }
+      }
+
+      function toggleComplete(event) {
+        event.target.classList.toggle("completed");
+      }
+
+      function deleteToDoItem(event) {
+        const listItem = event.target.parentElement;
+        listItem.remove();
+      }
+
+      function updateToDoItem(taskTextElement) {
+        const newTaskText = prompt(
+          "Update the task:",
+          taskTextElement.textContent
+        );
+        if (newTaskText !== null && newTaskText.trim() !== "") {
+          taskTextElement.textContent = newTaskText;
+        }
+      }
+    </script>
+  </body>
+</html>

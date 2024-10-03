@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="todo-header">
+        <h2>ToDo List</h2> &nbsp;
+        <i class="fa-regular fa-rectangle-list"></i>
+      </div>
+      <div class="todo-body">
+        <input
+          type="text"
+          id="todoText"
+          class="todo-input"
+          placeholder="Add your items"
+        /><button onclick="CreateToDoItems()">
+          <i class="fa-solid fa-plus"></i
+        ></button>
+
+      </div>
+      <h5 id="Alert"></h5>
+      <ul id="list-items" class="list-items"></ul>
+    </div>
+    <!-- <script src="./script.js"></script> -->
+    <script src="./test.js"></script>
+  </body>
+</html>

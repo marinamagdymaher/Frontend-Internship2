@@ -1,0 +1,26 @@
+
+
+/* start article section */
+
+.div3 {
+  /* grid-area: 1 / 2 / 3 / 3; */
+  grid-area: 3 / 1 / 4 / 6;
+  /* background-color: aliceblue; */
+}
+
+.div4 {
+  grid-area: 4 / 1 / 6 / 4;
+  /* background-color: brown; */
+}
+
+.div4 {
+  grid-area: 4 / 4 / 6 / 6;
+  font-family: Inter;
+  text-align: center;
+  font-weight: 400;
+  color: #545454;
+}
+
+
+
+/* end article section */
