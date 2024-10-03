@@ -5,7 +5,6 @@ const addUpdate = document.getElementById("AddUpdateClick");
 
 let todo = JSON.parse(localStorage.getItem("todo-list")) || [];
 
-// Render the todo list when the page loads
 document.addEventListener("DOMContentLoaded", renderTodoList);
 
 function setLocalStorage() {
@@ -15,30 +14,27 @@ function setLocalStorage() {
 function createTodoElement(item) {
   const li = document.createElement("li");
   const taskText = document.createElement("span");
-
+  li.appendChild(taskText);
   const input = document.createElement("input");
   input.setAttribute("type", "checkbox");
-  input.checked = item.status; // Set checkbox based on status
-  taskText.textContent = item.item;
-  if (item.status) {
-    taskText.style.textDecoration = "line-through";
-  }
+  // input.checked = item.status; // Set checkbox based on status
+  taskText.textContent = item.item; // Set the task text
 
   const editButton = createButton("Edit", "update-btn", () =>
-    updateToDoItem(item.id, taskText)
+    updateToDoItem(item)
   );
   const deleteButton = createButton("Delete", "delete-btn", (e) =>
-    deleteToDoItem(e, item.id)
+    deleteToDoItem(e, item)
   );
 
-  li.appendChild(input);
   li.appendChild(taskText);
+  li.appendChild(input);
+
   li.appendChild(editButton);
   li.appendChild(deleteButton);
 
   // Add event listeners for editing and deleting
-  input.addEventListener("click", () => checked(taskText, item.id));
-  
+  input.addEventListener("click", () => checked(item, taskText));
   return li;
 }
 
@@ -50,27 +46,16 @@ function createButton(text, className, onClickHandler) {
   return button;
 }
 
-function checked(taskText, id) {
-  const itemIndex = todo.findIndex((item) => item.id === id);
-  if (itemIndex !== -1) {
-    todo[itemIndex].status = !todo[itemIndex].status; // Toggle status
-    if (todo[itemIndex].status) {
-      taskText.style.textDecoration = "line-through";
-    } else {
-      taskText.style.textDecoration = "";
-    }
-    setLocalStorage();
-  }
-}
-
 function checked(element, taskText) {
   const itemIndex = todo.findIndex((item) => item.id === element.id);
 
+  // console.log(itemIndex);
+
   if (itemIndex !== -1) {
-    // Get the actual item from the todo list using the index
     const item = todo[itemIndex];
     
     item.status = !item.status; // Toggle status
+    
     if (item.status) {
       taskText.style.textDecoration = "line-through";
     } else {
@@ -80,10 +65,11 @@ function checked(element, taskText) {
   }
 }
 
-
-// Render the todo list from local storage
+// Function to render the todo list from local storage
 function renderTodoList() {
+  // Clear existing list items
   listItems.innerHTML = "";
+  // Iterate over todo items and create list elements
   todo.forEach((item) => {
     const li = createTodoElement(item);
     listItems.appendChild(li);
@@ -91,52 +77,60 @@ function renderTodoList() {
 }
 
 function CreateToDoItems() {
-  if (todoValue.value.trim() === "") {
-    setAlertMessage("Please enter your todo text!");
+  if (todoValue.value === "") {
+    todoAlert.innerText = "Please enter your todo text!";
     todoValue.focus();
-    return;
+
+    setTimeout(() => {
+      todoAlert.innerText = "";
+    }, 3000);
+  } else {
+    let IsPresent = false;
+    todo.forEach((element) => {
+      if (element.item == todoValue.value) {
+        IsPresent = true;
+      }
+    });
+
+    if (IsPresent) {
+      todoAlert.innerText = "This item already present in the list!";
+      return;
+    }
+
+    let itemList = {
+      id: Date.now(),
+      item: todoValue.value,
+      status: false,
+    };
+    todo.push(itemList);
+    const newTask = createTodoElement(itemList);
+    listItems.appendChild(newTask);
+
+    todoValue.value = "";
+    setLocalStorage();
+    setAlertMessage("Todo item Created Successfully!");
   }
-
-  const isPresent = todo.some((element) => element.item === todoValue.value);
-
-  if (isPresent) {
-    setAlertMessage("This item is already present in the list!");
-    return;
-  }
-
-  const itemList = {
-    id: Date.now(),
-    item: todoValue.value,
-    status: false,
-  };
-  todo.push(itemList);
-  const newTask = createTodoElement(itemList);
-  listItems.appendChild(newTask);
-
-  todoValue.value = "";
-  setLocalStorage();
-  setAlertMessage("Todo item created successfully!");
 }
 
-function updateToDoItem(id, taskText) {
-  const newTaskText = prompt("Update the task:", taskText.textContent);
-  if (newTaskText !== null && newTaskText.trim() !== "") {
-    const itemIndex = todo.findIndex((item) => item.id === id);
+function updateToDoItem(element) {
+  const newText = prompt("Update the task:", element.item);
+  if (newText !== null && newText.trim() !== "") {
+    const itemIndex = todo.findIndex((item) => item.id === element.id);
     if (itemIndex !== -1) {
-      todo[itemIndex].item = newTaskText;
-      taskText.textContent = newTaskText;
-      setAlertMessage("Updated successfully!");
+      todo[itemIndex].item = newText;
+      renderTodoList();
+      setAlertMessage("Updated Successfully");
       setLocalStorage();
     }
   }
 }
 
-function deleteToDoItem(e, id) {
-  if (confirm(`Are you sure you want to delete this task?`)) {
-    const deleteValue = e.target.parentElement;
+function deleteToDoItem(e, element) {
+  let deleteValue = e.target.parentElement;
+  if (confirm(`Are you sure. Due you want to delete this ${element.item}!`)) {
     deleteValue.remove();
-    todo = todo.filter((item) => item.id !== id);
-    setAlertMessage("Deleted successfully!");
+    todo = todo.filter((item) => item.id !== element.id);
+    setAlertMessage(`Deleted ${element.item} Successfully`);
     setLocalStorage();
   }
 }
