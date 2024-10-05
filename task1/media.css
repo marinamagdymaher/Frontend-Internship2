@@ -19,13 +19,22 @@
   }
 
   .div5 {
+    -ms-grid-row: 4;
+    -ms-grid-row-span: 2;
+    -ms-grid-column: 1;
+    -ms-grid-column-span: 3;
     grid-area: 4 / 1 / 6 / 4;
   }
 
   .div6 {
+    -ms-grid-row: 4;
+    -ms-grid-row-span: 2;
+    -ms-grid-column: 4;
+    -ms-grid-column-span: 2;
     grid-area: 4 / 4 / 6 / 6;
   }
 }
+
 @media (min-width: 768px) {
   .service h4::before {
     width: 4%;
@@ -41,6 +50,7 @@
     margin: 3rem 0 0.5rem 5rem;
   }
 }
+
 @media (min-width: 1024px) {
   .parent {
     display: grid;
@@ -88,7 +98,9 @@
     height: 151px;
   }
 }
+
 @media (min-width: 1280px) {
 }
+
 @media (min-width: 1536px) {
 }

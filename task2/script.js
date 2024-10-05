@@ -14,10 +14,11 @@ function setLocalStorage() {
 function createTodoElement(item) {
   const li = document.createElement("li");
   const taskText = document.createElement("span");
+  taskText.style.textDecoration = (item.status) ? "line-through" : "";
   li.appendChild(taskText);
   const input = document.createElement("input");
   input.setAttribute("type", "checkbox");
-  // input.checked = item.status; // Set checkbox based on status
+  input.checked = item.status; // Set checkbox based on status
   taskText.textContent = item.item; // Set the task text
 
   const editButton = createButton("Edit", "update-btn", () =>
@@ -47,23 +48,27 @@ function createButton(text, className, onClickHandler) {
 }
 
 function checked(element, taskText) {
-  const itemIndex = todo.findIndex((item) => item.id === element.id);
-
-  // console.log(itemIndex);
-
-  if (itemIndex !== -1) {
-    const item = todo[itemIndex];
-    
-    item.status = !item.status; // Toggle status
-    
-    if (item.status) {
-      taskText.style.textDecoration = "line-through";
-    } else {
-      taskText.style.textDecoration = "";
-    }
-    setLocalStorage();
+  const item = todo.find((item) => item.id === element.id);
+  item.status = !item.status;
+  if (item.status === true) {
+    taskText.style.textDecoration = "line-through";
+  } else {
+    taskText.style.textDecoration = "";
   }
+  setLocalStorage();
 }
+
+// if (itemIndex !== -1) {
+//   const item = todo[itemIndex];
+
+//   item.status = !item.status; // Toggle status
+
+//   if (item.status) {
+//     element.item.style.textDecoration = "line-through";
+//   } else {
+//     taskText.style.textDecoration = "";
+//   }
+// }
 
 // Function to render the todo list from local storage
 function renderTodoList() {
