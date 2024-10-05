@@ -71,6 +71,7 @@ function checked(element, taskText) {
 // }
 
 // Function to render the todo list from local storage
+
 function renderTodoList() {
   // Clear existing list items
   listItems.innerHTML = "";
